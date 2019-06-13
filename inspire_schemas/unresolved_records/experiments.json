@@ -1,0 +1,349 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "additionalProperties": false,
+    "description": "This record can describe different types of projects, depending on the\nvalue of :ref:`experiments.json#/properties/project_type`.",
+    "properties": {
+        "$schema": {
+            "format": "uri",
+            "minLength": 1,
+            "type": "string"
+        },
+        "_collections": {
+            "items": {
+                "enum": [
+                    "Experiments"
+                ],
+                "minLength": 1,
+                "type": "string"
+            },
+            "minItems": 1,
+            "title": "Collections to which this record belongs",
+            "type": "array",
+            "uniqueItems": true
+        },
+        "_full_ingestion": {
+            "title": "Whether to ingest all articles written by this project",
+            "type": "boolean"
+        },
+        "_private_notes": {
+            "description": ":MARC: ``595__a``, ``667__a``\n\nThese notes are only visible to privileged users, not regular\nusers.",
+            "items": {
+                "$ref": "elements/sourced_value.json"
+            },
+            "minItems": 1,
+            "title": "List of private notes",
+            "type": "array",
+            "uniqueItems": true
+        },
+        "accelerator": {
+            "additionalProperties": false,
+            "description": "- If ``accelerator`` is present in :ref:`project_type`, this field\n  contains information about this accelerator.\n- If ``experiment`` is present in :ref:`project_type`, this field\n  refers to the accelerator that provides a beam to this experiment.",
+            "properties": {
+                "curated_relation": {
+                    "type": "boolean"
+                },
+                "record": {
+                    "$ref": "elements/json_reference.json",
+                    "description": "If ``accelerator`` is not present in\n:ref:`experiments.json#/properties/project_type`, this\nlinks to the related accelerator record."
+                },
+                "value": {
+                    "description": ":MARC: ``119__b``\n:example: ``LHC``",
+                    "minLength": 1,
+                    "title": "Accelerator name",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value"
+            ],
+            "type": "object"
+        },
+        "collaboration": {
+            "additionalProperties": false,
+            "description": ":MARC: ``710``\n\n- If ``collaboration`` is present in :ref:`project_type`, this field\n  contains information about this collaboration.\n- Otherwise, this field refers to the collaboration that runs this\n  accelerator/experiment.",
+            "properties": {
+                "curated_relation": {
+                    "type": "boolean"
+                },
+                "record": {
+                    "$ref": "elements/json_reference.json",
+                    "description": "If ``collaboration`` is not present in\n:ref:`experiments.json#/properties/project_type`, this\nlinks to the related collaboration record."
+                },
+                "subgroup_names": {
+                    "description": ":MARC: ``710__q``\n\nSometimes papers are signed not by the full collaboration,\nbut only by a more focused subgroup. This records the\nnames of those groups.\n\n:example: ``ATLAS TDAQ``",
+                    "items": {
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "minItems": 1,
+                    "title": "List of names of subgroups",
+                    "type": "array",
+                    "uniqueItems": true
+                },
+                "value": {
+                    "description": ":MARC: ``710__g``\n:example: ``D0``",
+                    "minLength": 1,
+                    "title": "Collaboration name",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value"
+            ],
+            "type": "object"
+        },
+        "control_number": {
+            "description": ":MARC: ``001``\n\nRead-only field.",
+            "title": "ID of current record",
+            "type": "integer"
+        },
+        "core": {
+            "description": ":MARC: ``980:CORE`` corresponds to ``true``.\n\nWhether the papers written by this project are generally\n:ref:`hep.json#/properties/core`.",
+            "type": "boolean"
+        },
+        "date_approved": {
+            "description": ":MARC: ``046__r``",
+            "format": "date",
+            "minLength": 1,
+            "title": "Approval date of experiment/accelerator",
+            "type": "string"
+        },
+        "date_cancelled": {
+            "description": ":MARC: ``046__c``",
+            "format": "date",
+            "minLength": 1,
+            "title": "Cancellation date of experiment/accelerator",
+            "type": "string"
+        },
+        "date_completed": {
+            "description": ":MARC: ``046__t``",
+            "format": "date",
+            "minLength": 1,
+            "title": "Completion date of experiment/accelerator",
+            "type": "string"
+        },
+        "date_proposed": {
+            "description": ":MARC: ``046__q``",
+            "format": "date",
+            "minLength": 1,
+            "title": "Proposal date of experiment/accelerator",
+            "type": "string"
+        },
+        "date_started": {
+            "description": ":MARC: ``046__s``",
+            "format": "date",
+            "minLength": 1,
+            "title": "Starting date of experiment/accelerator",
+            "type": "string"
+        },
+        "deleted": {
+            "description": ":MARC: ``980__a/c:deleted``",
+            "title": "Whether this record has been deleted",
+            "type": "boolean"
+        },
+        "deleted_records": {
+            "description": ":MARC: ``981__a``\n\nList of records that were deleted because they were replaced by\nthis one. This typically happens when merging two records: one of\nthem gets enriched with the information of the other one, which is\nthen superfluous and gets deleted.\n\nFor the opposite concept, see :ref:`new_record`.",
+            "items": {
+                "$ref": "elements/json_reference.json"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+        },
+        "description": {
+            "description": ":MARC: ``520__a``\n\nThis should take the form of a short text.",
+            "minLength": 1,
+            "title": "Description of the project",
+            "type": "string"
+        },
+        "experiment": {
+            "additionalProperties": false,
+            "description": "If ``experiment`` is present in :ref:`project_type`, this field\ncontains information about this experiment.",
+            "properties": {
+                "short_name": {
+                    "description": ":MARC: ``119__d``\n:example: ``SHINE``",
+                    "minLength": 1,
+                    "type": "string"
+                },
+                "value": {
+                    "description": ":MARC: ``119__c``\n:example: ``NA61``",
+                    "minLength": 1,
+                    "title": "Experiment identifier",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "external_system_identifiers": {
+            "description": "List of identifiers of this document on external systems.",
+            "items": {
+                "anyOf": [
+                    {
+                        "additionalProperties": false,
+                        "properties": {
+                            "schema": {
+                                "enum": [
+                                    "SPIRES"
+                                ],
+                                "minLength": 1,
+                                "type": "string"
+                            },
+                            "value": {
+                                "description": ":MARC: ``970__a``",
+                                "minLength": 1,
+                                "pattern": "^EXPERIMENT-\\d+$",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "schema",
+                            "value"
+                        ],
+                        "title": "SPIRES identifier",
+                        "type": "object"
+                    }
+                ]
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+        },
+        "inspire_categories": {
+            "items": {
+                "$ref": "elements/inspire_field.json"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+        },
+        "inspire_classification": {
+            "items": {
+                "description": ":MARC: ``372__a``\n\nCategory to which this experiment belongs. The possible values\ncan be found on the `experiment categories\npage <http://inspirehep.net/info/Experiments/list>`_ on legacy.\n\n:example: ``3.1.1`` for ``ultra-short baseline, reactor, neutrino\n    (flavor) experiment``",
+                "minLength": 1,
+                "pattern": "\\d+(\\.\\d+){0,2}",
+                "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+        },
+        "institutions": {
+            "items": {
+                "additionalProperties": false,
+                "properties": {
+                    "curated_relation": {
+                        "type": "boolean"
+                    },
+                    "record": {
+                        "$ref": "elements/json_reference.json",
+                        "title": "Record URI of the institution."
+                    },
+                    "value": {
+                        "description": ":MARC: ``119__u``\n\nCurrently, the old\n:ref:`institutions.json#/properties/legacy_ICN` is used\nhere.",
+                        "minLength": 1,
+                        "title": "ICN of institution hosting the project",
+                        "type": "string"
+                    }
+                },
+                "title": "Host institution",
+                "type": "object"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+        },
+        "legacy_creation_date": {
+            "format": "date",
+            "minLength": 1,
+            "type": "string"
+        },
+        "legacy_name": {
+            "description": ":MARC: ``119__a``\n:example: ``CERN-LHC-CMS``",
+            "minLength": 1,
+            "title": "project identifier on legacy INSPIRE",
+            "type": "string"
+        },
+        "legacy_version": {
+            "description": ":MARC: ``005``\n\nUsed to indicate the version of the record on legacy.",
+            "minLength": 1,
+            "title": "Last record update",
+            "type": "string"
+        },
+        "long_name": {
+            "description": ":MARC: ``245__a``\n:example: ``Compact Muon Solenoid``",
+            "minLength": 1,
+            "title": "long name of the project",
+            "type": "string"
+        },
+        "name_variants": {
+            "description": ":MARC: ``419__a``",
+            "items": {
+                "minLength": 1,
+                "type": "string"
+            },
+            "minItems": 1,
+            "title": "Name variants of the project",
+            "type": "array",
+            "uniqueItems": true
+        },
+        "new_record": {
+            "$ref": "elements/json_reference.json",
+            "description": ":MARC: ``970__d``\n\nContains a reference to the record replacing the current one, if it\nis marked as :ref:`deleted`.",
+            "title": "Record replacing this one"
+        },
+        "project_type": {
+            "description": ":MARC: ``980:ACCELERATOR`` corresponds to an ``accelerator``, otherwise\n    it is an ``experiment``.\n\nA project can represent a combination of ``collaboration``, ``accelerator`` and ``experiment``,\ndepending on the contents of this field. Typical cases are:\n\n\n=================   ==============  =============== ===========\n``collaboration``   ``experiment``  ``accelerator`` explanation\n=================   ==============  =============== ===========\npresent              present         absent          typical case where a collaboration runs a single experiment (e.g. ``ALICE``).\npresent              absent          absent          non-experimental collaboration (e.g. lattice) or experimental collaboration corresponding to several experiments (e.g. ``DO``).\nabsent               present         absent          non-unique experiment among the experiments run by this collaboration (e.g. ``DO Run I``).\nabsent               absent          present         accelerator that is not a collaboration (e.g. ``LHC``).\npresent              absent          present         accelerator that is also a collaboration (e.g. ``CLIC``).\n=================   ==============  =============== ===========\n\n- When ``collaboration`` is present, the :ref:`collaboration` field\n  contains information about it. Otherwise, it might refer to the\n  collaboration record corresponding to the current\n  accelerator/experiment.\n- When ``experiment`` is present, the :ref:`experiment` field\n  contains information about it.\n- When ``accelerator`` is present, the :ref:`accelerator` field\n  contains information about it. If not, but ``experiment`` is\n  present, it might refer to the accelerator record providing a beam to\n  this experiment.",
+            "items": {
+                "enum": [
+                    "collaboration",
+                    "experiment",
+                    "accelerator"
+                ],
+                "minLength": 1,
+                "type": "string"
+            },
+            "minItems": 1,
+            "minLength": 1,
+            "title": "Type of project that this record represents",
+            "type": "array",
+            "uniqueItems": true
+        },
+        "public_notes": {
+            "description": ":MARC: ``500``\n\nAny notes about the document that do not fit into another field.\n\n.. note::\n\n    These notes are publicly visible. For notes not shown to\n    regular users, see :ref:`_private_notes`.",
+            "items": {
+                "$ref": "elements/sourced_value.json"
+            },
+            "minItems": 1,
+            "title": "List of public notes",
+            "type": "array",
+            "uniqueItems": true
+        },
+        "related_records": {
+            "description": ":MARC: ``510``",
+            "items": {
+                "$ref": "elements/related_record.json"
+            },
+            "minItems": 1,
+            "title": "List of related records",
+            "type": "array",
+            "uniqueItems": true
+        },
+        "self": {
+            "$ref": "elements/json_reference.json"
+        },
+        "urls": {
+            "items": {
+                "$ref": "elements/url.json"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+        }
+    },
+    "required": [
+        "project_type",
+        "_collections"
+    ],
+    "title": "A collaboration/experiment/accelerator record",
+    "type": "object"
+}
